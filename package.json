@@ -10,7 +10,8 @@
     "lint:inspect": "eslint --inspect-config",
     "format": "prettier --write . ",
     "format:check": "prettier --check . ",
-    "clean": "git clean -xdf .next node_modules"
+    "clean": "git clean -xdf .next node_modules",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@t3-oss/env-nextjs": "^0.11.1",
