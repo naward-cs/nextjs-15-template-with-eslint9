@@ -1,0 +1,20 @@
+{
+  "editor.tabSize": 2,
+  "prettier.singleQuote": true,
+  "prettier.bracketSpacing": false,
+  "prettier.endOfLine": "lf",
+  "prettier.semi": false,
+  "javascript.preferences.quoteStyle": "single",
+  "javascript.format.semicolons": "remove",
+  "typescript.format.semicolons": "remove",
+  "editor.formatOnSave": true,
+  "editor.formatOnPaste": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "always",
+    "source.organizeImports": "always"
+  },
+  "files.associations": {
+    "*.css": "tailwindcss"
+  },
+  "typescript.tsdk": "node_modules/typescript/lib"
+}
