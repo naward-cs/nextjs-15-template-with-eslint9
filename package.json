@@ -12,7 +12,7 @@
     "format:check": "prettier --check . ",
     "clean": "git clean -xdf .next node_modules",
     "typecheck": "tsc --noEmit",
-    "prepare": "husky install"
+    "prepare": "husky"
   },
   "dependencies": {
     "@t3-oss/env-nextjs": "^0.11.1",
@@ -40,9 +40,9 @@
     "eslint-plugin-react": "^7.37.2",
     "eslint-plugin-react-hooks": "^5.0.0",
     "globals": "^15.11.0",
-    "husky": ">=7",
+    "husky": "^9.1.6",
     "jiti": "^2.3.3",
-    "lint-staged": ">=10",
+    "lint-staged": "^15.2.10",
     "postcss": "^8.4.47",
     "prettier": "^3.3.3",
     "prettier-plugin-tailwindcss": "^0.6.8",
