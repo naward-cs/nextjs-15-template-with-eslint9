@@ -2,7 +2,7 @@
 //@ts-check
 import * as path from 'node:path'
 
-import {includeIgnoreFile} from '@eslint/compat'
+import { includeIgnoreFile } from '@eslint/compat'
 import eslint from '@eslint/js'
 import nextPlugin from '@next/eslint-plugin-next'
 import checkFilePlugin from 'eslint-plugin-check-file'
@@ -166,5 +166,5 @@ export default [
   ...reactConfig,
   ...nextConfig,
   /** uncomment if using t3-env */
-  // ...restrictEnvAccess,
+  ...restrictEnvAccess,
 ]
