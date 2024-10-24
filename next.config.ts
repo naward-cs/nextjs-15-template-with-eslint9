@@ -1,11 +1,11 @@
+// import {fileURLToPath} from 'url'
 import type {NextConfig} from 'next'
 
-/** uncomment if using a env file */
-// import { fileURLToPath } from "url";
-// import { createJiti } from "jiti";
+// /** uncomment if using a env file */
+// import {createJiti} from 'jiti'
 
-//* Import env files to validate at build time. Use jiti so we can load .ts files in here. */
-// await createJiti(fileURLToPath(import.meta.url)).import("./src/env");
+// //* Import env files to validate at build time. Use jiti so we can load .ts files in here. */
+// await createJiti(fileURLToPath(import.meta.url)).import('./src/configs/env')
 
 const nextConfig: NextConfig = {
   /* config options here */
