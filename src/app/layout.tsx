@@ -2,7 +2,7 @@ import type {Metadata} from 'next'
 
 import localFont from 'next/font/local'
 
-import DevUIProvider from '@/lib/providers/DevUiProvider'
+import DevUIProvider from '@/features/app/providers/dev-ui'
 
 import './globals.css'
 
