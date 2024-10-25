@@ -1,3 +1,4 @@
+/// <reference types="./eslint.config.d.ts" />
 //@ts-check
 import * as path from 'node:path'
 
@@ -5,6 +6,8 @@ import {includeIgnoreFile} from '@eslint/compat'
 import pluginJs from '@eslint/js'
 import nextPlugin from '@next/eslint-plugin-next'
 import checkFilePlugin from 'eslint-plugin-check-file'
+import importPlugin from 'eslint-plugin-import'
+import prettierPlugin from 'eslint-plugin-prettier'
 import reactPlugin from 'eslint-plugin-react'
 import reactHookPlugin from 'eslint-plugin-react-hooks'
 import globals from 'globals'
@@ -24,7 +27,7 @@ const restrictEnvAccess = tseslint.config(
           object: 'process',
           property: 'env',
           message:
-            "Use `import { env } from '~/env'` instead to ensure validated types.",
+            "Use `import { env } from '@/configs/env'` instead to ensure validated types.",
         },
       ],
       'no-restricted-imports': [
@@ -33,7 +36,7 @@ const restrictEnvAccess = tseslint.config(
           name: 'process',
           importNames: ['env'],
           message:
-            "Use `import { env } from '~/env'` instead to ensure validated types.",
+            "Use `import { env } from '@/configs/env'` instead to ensure validated types.",
         },
       ],
     },
@@ -58,6 +61,9 @@ export default [
   ...tseslint.configs.recommendedTypeChecked,
   ...tseslint.configs.stylisticTypeChecked,
   {files: ['**/*.{{js,mjs,}'], ...tseslint.configs.disableTypeChecked},
+  {
+    plugins: {prettier: prettierPlugin},
+  },
   {
     files: ['**/*.js', '**/*.ts', '**/*.tsx'],
     plugins: {
@@ -84,8 +90,33 @@ export default [
     files: ['src/**/*', '**/*.js', '**/*.ts', '**/*.tsx'],
     plugins: {
       'check-file': checkFilePlugin,
+      import: importPlugin,
     },
     rules: {
+      /** typescript rules */
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        {argsIgnorePattern: '^_', varsIgnorePattern: '^_'},
+      ],
+      '@typescript-eslint/consistent-type-definitions': 'off',
+      '@typescript-eslint/consistent-type-imports': [
+        'warn',
+        {prefer: 'type-imports', fixStyle: 'separate-type-imports'},
+      ],
+      '@typescript-eslint/no-misused-promises': [
+        2,
+        {checksVoidReturn: {attributes: false}},
+      ],
+      '@typescript-eslint/no-unnecessary-condition': [
+        'error',
+        {
+          allowConstantLoopConditions: true,
+        },
+      ],
+      '@typescript-eslint/no-non-null-assertion': 'error',
+      'import/consistent-type-specifier-style': ['error', 'prefer-top-level'],
+      /** console  */
+      'no-console': ['error', {allow: ['warn', 'error', 'info']}],
       /** Lint rules for file stucture */
       'check-file/filename-naming-convention': [
         'error',
