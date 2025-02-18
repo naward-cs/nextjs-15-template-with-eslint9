@@ -1,6 +1,7 @@
-;
 // import {fileURLToPath} from 'url'
 import type {NextConfig} from 'next'
+
+import {env as envConfigs} from '@/configs/env'
 
 /**
  * uncomment if using a next.config.js vice next.config.ts and wanting to have env file and
@@ -11,9 +12,13 @@ import type {NextConfig} from 'next'
 // import {createJiti} from 'jiti'
 // await createJiti(fileURLToPath(import.meta.url)).import('./src/configs/env')
 // ** importing environmentals to validate on dev and build time. ** //
-import {env as envConfigs} from '@/configs/env'
+// import {env as envConfigs} from '@/configs/env'
+/** two options when handling env, one is seperated and another is together,
+ * refer to https://env.t3.gg/docs/nextjs why you might seperate
+ * sample of seperation is located in /sample/ folder
+ **/
 
-const env = envConfigs
+const _env = envConfigs //load to force ESM
 const nextConfig: NextConfig = {
   /* config options here */
   reactStrictMode: true,

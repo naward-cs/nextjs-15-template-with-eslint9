@@ -1,23 +1,22 @@
-/// <reference types="./eslint.config.d.ts" />
 //@ts-check
 import * as path from 'node:path'
 
-import {includeIgnoreFile} from '@eslint/compat'
-import pluginJs from '@eslint/js'
-import nextPlugin from '@next/eslint-plugin-next'
-import checkFilePlugin from 'eslint-plugin-check-file'
-import importPlugin from 'eslint-plugin-import'
-import prettierPlugin from 'eslint-plugin-prettier'
-import reactPlugin from 'eslint-plugin-react'
-import reactHookPlugin from 'eslint-plugin-react-hooks'
-import globals from 'globals'
+import { includeIgnoreFile } from '@eslint/compat'
 import tseslint from 'typescript-eslint'
 
-/**
- * All packages that leverage t3-env should use this rule
- */
+import { FlatCompat } from '@eslint/eslintrc'
+import checkFilePlugin from 'eslint-plugin-check-file'
+
+const compat = new FlatCompat({
+  // import.meta.dirname is available after Node.js v20.11.0
+  baseDirectory: import.meta.dirname,
+})
+
+
 const restrictEnvAccess = tseslint.config(
-  {ignores: ['**/env.ts']},
+  {
+    ignores: ['**/env.ts'],
+  },
   {
     files: ['**/*.js', '**/*.ts', '**/*.tsx'],
     rules: {
@@ -43,69 +42,37 @@ const restrictEnvAccess = tseslint.config(
   }
 )
 
-export default [
-  // Ignore files not tracked by VCS and any config files
+const eslintConfig = [
   includeIgnoreFile(path.join(import.meta.dirname, '.gitignore')),
-  {ignores: ['**/*.config.*', '.next/**']},
-  {files: ['**/*.{js,mjs,cjs,ts,jsx,tsx}']},
   {
     languageOptions: {
-      globals: {...globals.browser, ...globals.node},
       parserOptions: {
         projectService: true,
         tsconfigRootDir: import.meta.dirname,
       },
     },
   },
-  pluginJs.configs.recommended,
-  ...tseslint.configs.recommendedTypeChecked,
-  ...tseslint.configs.stylisticTypeChecked,
-  {files: ['**/*.{{js,mjs,}'], ...tseslint.configs.disableTypeChecked},
-  {
-    plugins: {prettier: prettierPlugin},
-  },
-  {
-    files: ['**/*.js', '**/*.ts', '**/*.tsx'],
-    plugins: {
-      react: reactPlugin,
-      'react-hooks': reactHookPlugin,
-      '@next/next': nextPlugin,
-    },
+  {ignores: ['**/*.config.*', '.next/**']},
+  {files: ['**/*.{js,mjs,cjs,ts,jsx,tsx}']},
+  ...compat.config({
+    extends: [ 'next/core-web-vitals', 'next/typescript', 'prettier' ],
     rules: {
-      /** Lint rules for reactjs */
-      ...reactPlugin.configs['jsx-runtime'].rules,
-      ...reactHookPlugin.configs.recommended.rules,
-      /** Lint rules for nextjs */
-      ...nextPlugin.configs.recommended.rules,
-      ...nextPlugin.configs['core-web-vitals'].rules,
+      'react/no-unescaped-entities': 'off',
       '@next/next/no-html-link-for-pages': 'error',
-    },
-    languageOptions: {
-      globals: {
-        React: 'writable',
-      },
-    },
-  },
-  {
-    files: ['src/**/*', '**/*.js', '**/*.ts', '**/*.tsx'],
-    plugins: {
-      'check-file': checkFilePlugin,
-      import: importPlugin,
-    },
-    rules: {
+      'import/consistent-type-specifier-style': [ 'error', 'prefer-top-level' ],
       /** typescript rules */
       '@typescript-eslint/no-unused-vars': [
         'error',
-        {argsIgnorePattern: '^_', varsIgnorePattern: '^_'},
+        { argsIgnorePattern: '^_', varsIgnorePattern: '^_' },
       ],
       '@typescript-eslint/consistent-type-definitions': 'off',
       '@typescript-eslint/consistent-type-imports': [
         'warn',
-        {prefer: 'type-imports', fixStyle: 'separate-type-imports'},
+        { prefer: 'type-imports', fixStyle: 'separate-type-imports' },
       ],
       '@typescript-eslint/no-misused-promises': [
         2,
-        {checksVoidReturn: {attributes: false}},
+        { checksVoidReturn: { attributes: false } },
       ],
       '@typescript-eslint/no-unnecessary-condition': [
         'error',
@@ -113,10 +80,25 @@ export default [
           allowConstantLoopConditions: true,
         },
       ],
-      '@typescript-eslint/no-non-null-assertion': 'error',
-      'import/consistent-type-specifier-style': ['error', 'prefer-top-level'],
+      '@typescript-eslint/no-non-null-assertion': 'off',
+      '@typescript-eslint/no-unsafe-member-access': 'off',
+      '@typescript-eslint/no-unsafe-assignment': 'off',
+      '@typescript-eslint/no-unsafe-argument': 'off',
+      '@typescript-eslint/no-unsafe-return': 'off',
+      '@typescript-eslint/no-unsafe-call': 'off',
+      '@typescript-eslint/unbound-method': 'off',
+
       /** console  */
-      'no-console': ['error', {allow: ['warn', 'error', 'info']}],
+      'no-console': [ 'error', { allow: [ 'warn', 'error', 'info' ] } ],
+    },
+  }),
+  {
+    files: [ 'src/**/*', '**/*.js', '**/*.ts', '**/*.tsx' ],
+    ignores: [ 'tests/**/*' ],
+    plugins: {
+      'check-file': checkFilePlugin,
+    },
+    rules: {
       /** Lint rules for file stucture */
       'check-file/filename-naming-convention': [
         'error',
@@ -139,6 +121,8 @@ export default [
         },
       ],
     },
-  },
+  }, 
   ...restrictEnvAccess,
 ]
+
+export default eslintConfig

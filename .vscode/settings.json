@@ -20,6 +20,6 @@
   "workbench.editor.customLabels.patterns": {
     "**/page.tsx": "${dirname} - Page",
     "**/layout.tsx": "${dirname} - Layout",
-    "**/comppnents/**/index.tsx": "${dirname} - Component"
+    "**/components/**/index.tsx": "${dirname} - Component"
   }
 }

@@ -1,5 +1,7 @@
+import type {StandardSchemaV1} from 'node_modules/zod/lib/standard-schema'
+
 import {createEnv} from '@t3-oss/env-nextjs'
-import {z, ZodError} from 'zod'
+import {z} from 'zod'
 
 /**
  * By default, this library will feed the environment variables directly to
@@ -41,15 +43,20 @@ export const env = createEnv({
     // SERVERVAR: process.env.SERVERVAR,
     // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
   },
-
+  // Tell the library when we're in a server context.
+  isServer: typeof window === 'undefined',
   emptyStringAsUndefined: true,
   // Create a clean invalidator error for env variables
-  onValidationError: (error: ZodError) => {
-    console.error(
-      '❌ Invalid environment variables:',
-      error.flatten().fieldErrors
+  // Called when the schema validation fails.
+  onValidationError: (issues: readonly StandardSchemaV1.Issue[]) => {
+    console.error('❌ Invalid environment variables:', issues)
+    throw new Error('Invalid environment variables')
+  },
+  // Called when server variables are accessed on the client.
+  onInvalidAccess: (variable: string) => {
+    throw new Error(
+      `❌ Attempted to access a server-side environment variable "${variable}" on the client`
     )
-    process.exit(1)
   },
   // Skip validation if any of these cases
   skipValidation:
