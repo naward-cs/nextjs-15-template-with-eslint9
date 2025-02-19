@@ -1,19 +1,19 @@
 import type {StandardSchemaV1} from '@standard-schema/spec'
 
 import {createEnv} from '@t3-oss/env-nextjs'
+import {z} from 'zod'
 
-// import {z} from 'zod'
+import {clientEnv} from './env-client'
+import {serverEnv} from './env-server'
 
-export const serverEnv = createEnv({
-  /**
-   * Specify your server-side environment variables schema here.
-   * This way you can ensure the app isn't built with invalid env vars.
-   */
-  server: {
-    // SERVERVAR: z.string(),
+
+export const env = createEnv({
+  extends: [serverEnv, clientEnv],
+  shared: {
+    NODE_ENV: z.enum(['development', 'production']).default('development'),
   },
   runtimeEnv: {
-    // SERVERVAR: process.env.SERVERVAR,
+    NODE_ENV: process.env.NODE_ENV,
   },
   // Tell the library when we're in a server context.
   isServer: typeof window === 'undefined',

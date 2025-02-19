@@ -15,7 +15,7 @@ const compat = new FlatCompat({
 
 const restrictEnvAccess = tseslint.config(
   {
-    ignores: ['**/env.ts'],
+    ignores: [ '**/env.ts', '**/env-*.ts' ],
   },
   {
     files: ['**/*.js', '**/*.ts', '**/*.tsx'],
