@@ -1,4 +1,4 @@
-import type {StandardSchemaV1} from 'node_modules/zod/lib/standard-schema'
+import type {StandardSchemaV1} from '@standard-schema/spec'
 
 import {createEnv} from '@t3-oss/env-nextjs'
 import {z} from 'zod'

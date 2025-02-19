@@ -27,6 +27,7 @@
     "@ianvs/prettier-plugin-sort-imports": "^4.4.1",
     "@next/env": "^15.1.7",
     "@next/eslint-plugin-next": "^15.1.7",
+    "@standard-schema/spec": "^1.0.0",
     "@types/node": "^20.17.19",
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",
